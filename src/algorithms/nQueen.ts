@@ -6,7 +6,8 @@ const solveNQueens = async (
   n: number,
   setBoard: (board: BoardState) => void,
   speed: number,
-  solving: React.MutableRefObject<boolean>
+  solving: React.MutableRefObject<boolean>,
+  paused: React.MutableRefObject<boolean>
 ): Promise<boolean> => {
   const board: BoardState = Array.from({ length: n }, () => Array(n).fill(0));
 
@@ -23,6 +24,10 @@ const solveNQueens = async (
 
     for (let i = 0; i < n; i++) {
       if (!solving.current) return false;
+
+      while (paused.current) {
+        await sleep(100);
+      }
 
       if (isSafe(board, i, col)) {
         board[i][col] = 1;

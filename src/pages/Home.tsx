@@ -5,7 +5,7 @@ import useNQueen from "../hooks/useNQueen";
 const Home: React.FC = () => {
   const [n, setN] = useState(8);
   const [speed, setSpeed] = useState(500);
-  const { board, isSolving, startSolving, stopSolving } = useNQueen(n, speed);
+  const { board, isSolving, isPaused, startSolving, resetSolving, pauseSolving, resumeSolving } = useNQueen(n, speed);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
@@ -25,7 +25,7 @@ const Home: React.FC = () => {
             disabled={isSolving}
           />
         </div>
-        <div className="mt-4">
+        <div className="mt-4 flex flex-row items-center">
           <label className="mr-2">Speed (ms):</label>
           <input
             type="number"
@@ -37,12 +37,29 @@ const Home: React.FC = () => {
           />
         </div>
         {isSolving ? (
-          <button
-            className="mt-4 px-4 py-2 bg-red-500 text-white"
-            onClick={stopSolving}
-          >
-            Stop
-          </button>
+          <>
+            {isPaused ? (
+              <button
+                className="mt-4 px-4 py-2 bg-green-500 text-white"
+                onClick={resumeSolving}
+              >
+                Resume
+              </button>
+            ) : (
+              <button
+                className="mt-4 px-4 py-2 bg-yellow-500 text-white"
+                onClick={pauseSolving}
+              >
+                Pause
+              </button>
+            )}
+            <button
+              className="mt-4 px-4 py-2 bg-red-500 text-white"
+              onClick={resetSolving}
+            >
+              Reset
+            </button>
+          </>
         ) : (
           <button
             className="mt-4 px-4 py-2 bg-blue-500 text-white"
@@ -53,7 +70,8 @@ const Home: React.FC = () => {
         )}
       </div>
 
-      {isSolving && <p className="mt-4">Solving...</p>}
+      {isSolving && !isPaused && <p className="mt-4">Solving...</p>}
+      {isPaused && <p className="mt-4">Paused</p>}
     </div>
   );
 };
