@@ -1,0 +1,61 @@
+import React, { useState } from "react";
+import Board from "../components/Board";
+import useNQueen from "../hooks/useNQueen";
+
+const Home: React.FC = () => {
+  const [n, setN] = useState(8);
+  const [speed, setSpeed] = useState(500);
+  const { board, isSolving, startSolving, stopSolving } = useNQueen(n, speed);
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+      <h1 className="text-4xl font-bold mb-4">N-Queen Visualizer</h1>
+      <Board board={board} />
+
+      <div className="flex flex-row gap-5 items-center">
+        <div className="mt-4 flex flex-row items-center">
+          <label className="mr-2">Board Size:</label>
+          <input
+            type="number"
+            value={n}
+            onChange={(e) => setN(parseInt(e.target.value))}
+            className="border p-2 bg-gray-800 text-white"
+            min="1"
+            max="20"
+            disabled={isSolving}
+          />
+        </div>
+        <div className="mt-4">
+          <label className="mr-2">Speed (ms):</label>
+          <input
+            type="number"
+            value={speed}
+            onChange={(e) => setSpeed(parseInt(e.target.value))}
+            className="border p-2 pr-0 bg-gray-800 text-white max-w-fit"
+            min="100"
+            step="100"
+          />
+        </div>
+        {isSolving ? (
+          <button
+            className="mt-4 px-4 py-2 bg-red-500 text-white"
+            onClick={stopSolving}
+          >
+            Stop
+          </button>
+        ) : (
+          <button
+            className="mt-4 px-4 py-2 bg-blue-500 text-white"
+            onClick={startSolving}
+          >
+            Start
+          </button>
+        )}
+      </div>
+
+      {isSolving && <p className="mt-4">Solving...</p>}
+    </div>
+  );
+};
+
+export default Home;
