@@ -5,12 +5,12 @@ import useNQueen from "../hooks/useNQueen";
 const Home: React.FC = () => {
   const [n, setN] = useState(8);
   const [speed, setSpeed] = useState(500);
-  const { board, isSolving, isPaused, startSolving, resetSolving, pauseSolving, resumeSolving } = useNQueen(n, speed);
+  const { board, highlight, isSolving, isPaused, startSolving, resetSolving, pauseSolving, resumeSolving } = useNQueen(n, speed);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
       <h1 className="text-4xl font-bold mb-4">N-Queen Visualizer</h1>
-      <Board board={board} />
+      <Board board={board} highlightRow={highlight.row} highlightCol={highlight.col} highlightDiagonal={highlight.diagonal} />
 
       <div className="flex flex-col sm:flex-row gap-5 items-center">
         <div className="mt-4 flex flex-row items-center">

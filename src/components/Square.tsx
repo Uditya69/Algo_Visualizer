@@ -1,4 +1,6 @@
 import React from 'react';
+import { GiChessQueen } from "react-icons/gi";
+
 
 interface SquareProps {
   isQueen: boolean;
@@ -12,7 +14,10 @@ const Square: React.FC<SquareProps> = ({ isQueen, highlight }) => {
         highlight ? 'bg-blue-500' : isQueen ? 'bg-red-500' : 'bg-white'
       }`}
     >
-      {isQueen && <span className="text-white text-center">Q</span>}
+      {isQueen && <span className="text-white text-center">
+        <GiChessQueen />
+
+        </span>}
     </div>
   );
 };

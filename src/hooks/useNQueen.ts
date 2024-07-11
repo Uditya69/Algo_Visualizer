@@ -1,53 +1,41 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import solveNQueens, { BoardState } from '../algorithms/nQueen';
+import { useState, useRef } from 'react';
+import solveNQueens from '../algorithms/nQueen';
+import { BoardState, HighlightState } from '../types';
 
 const useNQueen = (n: number, speed: number) => {
-  const [board, setBoard] = useState<BoardState>([]);
-  const [isSolving, setIsSolving] = useState<boolean>(false);
-  const [isPaused, setIsPaused] = useState<boolean>(false);
-  const solving = useRef<boolean>(false);
-  const paused = useRef<boolean>(false);
+  const [board, setBoard] = useState<BoardState>(Array.from({ length: n }, () => Array(n).fill(0)));
+  const [isSolving, setIsSolving] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [highlight, setHighlight] = useState<HighlightState>({ row: null, col: null, diagonal: { main: null, anti: null } });
 
-  const resetSolving = useCallback(() => {
+  const solving = useRef(false);
+  const paused = useRef(false);
+
+  const startSolving = () => {
+    setIsSolving(true);
+    solving.current = true;
+    solveNQueens(n, setBoard, setHighlight, speed, solving, paused).then(() => setIsSolving(false));
+  };
+
+  const resetSolving = () => {
     solving.current = false;
+    setBoard(Array.from({ length: n }, () => Array(n).fill(0)));
+    setHighlight({ row: null, col: null, diagonal: { main: null, anti: null } });
     setIsSolving(false);
     setIsPaused(false);
-    setBoard(Array.from({ length: n }, () => Array(n).fill(0)));
-  }, [n]);
+  };
 
-  const pauseSolving = useCallback(() => {
+  const pauseSolving = () => {
     paused.current = true;
     setIsPaused(true);
-  }, []);
+  };
 
-  const resumeSolving = useCallback(() => {
+  const resumeSolving = () => {
     paused.current = false;
     setIsPaused(false);
-  }, []);
+  };
 
-  const startSolving = useCallback(() => {
-    solving.current = true;
-    setIsSolving(true);
-    setIsPaused(false);
-
-    const solve = async () => {
-      const initialBoard: BoardState = Array.from({ length: n }, () => Array(n).fill(0));
-      setBoard(initialBoard);
-      await solveNQueens(n, setBoard, speed, solving, paused);
-      setIsSolving(false);
-      setIsPaused(false);
-    };
-
-    solve();
-  }, [n, speed]);
-
-  useEffect(() => {
-    if (isSolving && !isPaused) {
-      startSolving();
-    }
-  }, [startSolving, isSolving, isPaused]);
-
-  return { board, isSolving, isPaused, startSolving, resetSolving, pauseSolving, resumeSolving };
+  return { board, highlight, isSolving, isPaused, startSolving, resetSolving, pauseSolving, resumeSolving };
 };
 
 export default useNQueen;
