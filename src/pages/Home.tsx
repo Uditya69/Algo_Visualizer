@@ -8,7 +8,7 @@ const Home: React.FC = () => {
   const { board, highlight, isSolving, isPaused, startSolving, resetSolving, pauseSolving, resumeSolving } = useNQueen(n, speed);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#121212] text-white">
       <h1 className="text-4xl font-bold mb-4">N-Queen Visualizer</h1>
       <Board board={board} highlightRow={highlight.row} highlightCol={highlight.col} highlightDiagonal={highlight.diagonal} />
 
@@ -25,7 +25,7 @@ const Home: React.FC = () => {
             disabled={isSolving}
           />
         </div>
-        <div className="mt-4 flex flex-row items-center">
+        {/* <div className="mt-4 flex flex-row items-center">
           <label className="mr-2">Speed (ms):</label>
           <input
             type="number"
@@ -35,27 +35,27 @@ const Home: React.FC = () => {
             min="100"
             step="100"
           />
-        </div>
+        </div> */}
         <div className="mt-4">
           {isSolving ? (
             <>
               {isPaused ? (
                 <button
-                  className="px-4 py-2 bg-green-500 text-white mr-2 mb-2 sm:mb-0"
+                  className="px-4 py-2 bg-green-500 text-white mr-2 mb-2 sm:mb-0 rounded-md"
                   onClick={resumeSolving}
                 >
                   Resume
                 </button>
               ) : (
                 <button
-                  className="px-4 py-2 bg-yellow-500 text-white mr-2 mb-2 sm:mb-0"
+                  className="px-4 py-2 bg-yellow-500 text-white mr-2 mb-2 sm:mb-0 rounded-md"
                   onClick={pauseSolving}
                 >
                   Pause
                 </button>
               )}
               <button
-                className="px-4 py-2 bg-red-500 text-white mb-2 sm:mb-0"
+                className="px-4 py-2 bg-red-500 text-white mb-2 sm:mb-0 rounded-md" 
                 onClick={resetSolving}
               >
                 Reset
@@ -63,7 +63,7 @@ const Home: React.FC = () => {
             </>
           ) : (
             <button
-              className="px-4 py-2 bg-blue-500 text-white"
+              className="px-4 py-2 bg-blue-500 text-white rounded-md"
               onClick={startSolving}
             >
               Start

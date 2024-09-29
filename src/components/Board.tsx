@@ -9,7 +9,10 @@ interface BoardProps {
 
 const Board: React.FC<BoardProps> = ({ board, highlightRow, highlightCol, highlightDiagonal }) => {
   return (
-    <div className={`grid grid-cols-${board.length} gap-1`}>
+    <div
+      className="grid gap-1"
+      style={{ gridTemplateColumns: `repeat(${board.length}, minmax(0, 1fr))` }} // Dynamically set grid columns
+    >
       {board.map((row, rowIndex) => (
         <React.Fragment key={rowIndex}>
           {row.map((cell, colIndex) => (
